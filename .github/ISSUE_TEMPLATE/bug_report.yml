@@ -1,0 +1,61 @@
+name: Scientific or Software Bug Report
+description: Report a calculation error, unexpected result, or software defect.
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report reproducible issues. Do not present a suspected scientific error as confirmed until the calculation and reference basis have been checked.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: Describe the observed issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Provide the input composition, settings, and steps needed to reproduce the issue.
+      placeholder: |
+        1. Enter oxide composition...
+        2. Select calculation settings...
+        3. Run calculation...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: Explain what you expected and why.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include the observed output or error message.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reference
+    attributes:
+      label: Scientific reference
+      description: Provide the publication, page, table, equation, or benchmark supporting the expected result.
+    validations:
+      required: false
+
+  - type: input
+    id: environment
+    attributes:
+      label: Software environment
+      placeholder: Python version, operating system, application version
+    validations:
+      required: true

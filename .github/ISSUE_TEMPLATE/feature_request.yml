@@ -1,0 +1,51 @@
+name: Scientific or Software Feature Request
+description: Propose a new calculation capability, visualization, or application feature.
+title: "[FEATURE] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or scientific need
+      description: What limitation or research need does this feature address?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the feature or calculation capability.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scientific_basis
+    attributes:
+      label: Scientific basis and references
+      description: Provide relevant equations, publications, or methodological references where applicable.
+    validations:
+      required: false
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Proposed validation
+      description: How should the implementation be tested or independently verified?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature category
+      options:
+        - Calculation engine
+        - Geochemical input
+        - Mineral interpretation
+        - Visualization
+        - Data export and reporting
+        - Documentation
+        - Other
+    validations:
+      required: true
