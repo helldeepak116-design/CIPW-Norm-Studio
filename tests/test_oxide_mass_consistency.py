@@ -34,3 +34,11 @@ def test_hypersthene_endmember_weights_use_configured_oxide_masses():
 
     assert mg_weight == pytest.approx(expected_mg, abs=1e-12)
     assert fe_weight == pytest.approx(expected_fe, abs=1e-12)
+
+def test_quartz_formula_weight_uses_canonical_silica_mass():
+    expected = OXIDE_CONFIG["SiO2"]["molecular_weight"]
+
+    assert get_formula_weight("q") == pytest.approx(
+        expected,
+        abs=0.0,
+    )

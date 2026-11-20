@@ -284,6 +284,12 @@ def get_formula_weight(
             "apatite_fluorine_fraction is only valid for apatite"
         )
 
+    # Quartz is represented by one SiO2 molecular proportion.
+    # Use the canonical oxide molecular weight so conversion
+    # and normative mineral mass calculations share one basis.
+    if symbol == "q":
+        return OXIDE_MASSES["SiO2"]
+
     if entry.atoms is not None:
         return _formula_mass(entry.atoms)
 
