@@ -1,8 +1,8 @@
 # CIPW Norm Studio — Scientific Validation Report
 
-**Validation baseline:** 331 passing automated tests  
-**Calculation procedure:** Classical Kelsey (1965)  
-**Iron handling:** Measured FeO and Fe2O3 separately  
+**Validation baseline:** 332 passing automated tests
+**Calculation procedure:** Classical Kelsey (1965)
+**Iron handling:** Measured FeO and Fe2O3 separately
 **Report status:** Validation summary based on the benchmark and audit results recorded during development
 
 ---
@@ -120,7 +120,7 @@ This is a targeted rule and formula-mass audit. It is not a substitute for a com
 Recorded full-suite result after adding the corrected Kelsey Bostonite benchmark:
 
 ```text
-331 passed in 1.15s
+332 passed in 1.25s
 ```
 
 Dedicated regression tests recorded:
