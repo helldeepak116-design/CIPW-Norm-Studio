@@ -147,3 +147,51 @@ def test_dataframe_duplicate_sample_ids(valid_composition):
 
 def test_all_required_oxides_have_molecular_weights():
     assert set(REQUIRED_OXIDES) == set(OXIDE_CONFIG)
+
+
+@pytest.mark.parametrize("boolean_value", [True, False])
+def test_boolean_oxide_value_rejected(valid_composition, boolean_value):
+    valid_composition["FeO"] = boolean_value
+
+    result = validate_oxide_composition(valid_composition)
+
+    assert result["valid"] is False
+    assert any("boolean" in error.lower() for error in result["errors"])
+
+
+@pytest.mark.parametrize("sample_id", ["", "   "])
+def test_blank_sample_id_rejected(valid_composition, sample_id):
+    dataframe = pd.DataFrame([
+        {"Sample_ID": sample_id, **valid_composition}
+    ])
+
+    result = validate_geochemical_dataframe(dataframe)
+
+    assert result["valid"] is False
+    assert any("blank" in error.lower() for error in result["errors"])
+
+
+def test_numeric_string_oxide_value_remains_accepted(valid_composition):
+    valid_composition["FeO"] = "8.5"
+
+    result = validate_oxide_composition(valid_composition)
+
+    assert result["valid"] is True
+    assert result["analytical_total"] == pytest.approx(99.6)
+
+
+@pytest.mark.parametrize("nonfinite_value", [float("inf"), float("-inf"), float("nan")])
+def test_nonfinite_oxide_values_rejected(valid_composition, nonfinite_value):
+    valid_composition["FeO"] = nonfinite_value
+
+    result = validate_oxide_composition(valid_composition)
+
+    assert result["valid"] is False
+
+def test_numeric_string_oxide_value_remains_accepted(valid_composition):
+    valid_composition["FeO"] = "8.5"
+
+    result = validate_oxide_composition(valid_composition)
+
+    assert result["valid"] is True
+    assert result["analytical_total"] == pytest.approx(99.6)

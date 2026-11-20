@@ -26,6 +26,10 @@ def validate_oxide_composition(
     are accepted. Analytical-total limits generate warnings rather
     than automatic rejection.
 
+    Numeric strings are accepted and converted for validation.
+    Boolean values are rejected because they are not valid
+    geochemical concentrations.
+
     Returns a report containing errors, warnings and analytical total.
     """
     errors: list[str] = []
@@ -60,6 +64,10 @@ def validate_oxide_composition(
             errors.append(f"{oxide} is missing.")
             continue
 
+        if isinstance(value, (bool, np.bool_)):
+            errors.append(f"{oxide} must be numeric, not boolean.")
+            continue
+
         try:
             numeric_value = float(value)
         except (TypeError, ValueError):
@@ -88,7 +96,11 @@ def validate_oxide_composition(
 
     if not errors or (
         not require_all_oxides
-        and all(oxide in numeric_values for oxide in REQUIRED_OXIDES if oxide in composition)
+        and all(
+            oxide in numeric_values
+            for oxide in REQUIRED_OXIDES
+            if oxide in composition
+        )
     ):
         if len(numeric_values) == len(REQUIRED_OXIDES):
             analytical_total = float(sum(numeric_values.values()))
@@ -152,9 +164,18 @@ def validate_geochemical_dataframe(
         errors.append(f"Missing required oxide columns: {missing_columns}")
 
     if sample_id_column and sample_id_column in dataframe.columns:
-        if dataframe[sample_id_column].isna().any():
+        sample_ids = dataframe[sample_id_column]
+
+        if sample_ids.isna().any():
             errors.append(f"{sample_id_column} contains missing identifiers.")
-        elif dataframe[sample_id_column].astype(str).duplicated().any():
+
+        blank_ids = sample_ids.map(
+            lambda value: isinstance(value, str) and not value.strip()
+        )
+        if blank_ids.any():
+            errors.append(f"{sample_id_column} contains blank identifiers.")
+
+        if sample_ids.astype(str).duplicated().any():
             errors.append(f"{sample_id_column} contains duplicate identifiers.")
 
     if missing_columns:
